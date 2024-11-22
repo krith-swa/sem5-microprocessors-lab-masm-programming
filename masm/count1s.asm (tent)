@@ -1,0 +1,50 @@
+assume cs:code, ds:data
+
+data segment
+	org 0000h
+	arr db 4 dup(?)
+	org 0010h
+	count db 00h
+data ends
+
+code segment
+start:
+	mov ax, data
+	mov ds, ax
+	
+	;get 32-bit number as input (hex)
+	mov si, offset arr
+	mov cx, 04h
+scan: 
+	mov ah, 01h
+	int 21h
+	sub al, 30h ;to un-ascii the contents 
+	mov [si], al ;actual byte of 32-bit number is stored
+	inc si
+	loop scan
+
+	;to count number of ones in the number byte by byte
+	mov bl, count
+	mov si, offset arr
+	mov cl, 01h
+	mov dh, 04h
+each: 
+	mov al, [si]
+	mov dl, 08h
+	eachbit:
+		ror al, cl
+		jnc nextbit
+		inc bl
+	nextbit: 
+		dec dl
+		jnz eachbit
+	dec dh
+	jnz each
+
+	mov count, bl
+
+	
+	mov ah, 4ch
+	int 21h	
+code ends
+end start

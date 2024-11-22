@@ -1,0 +1,37 @@
+assume cs:code, ds:data
+
+data segment
+	org 0000h
+	count equ 05h
+	arr db 23h, 64h, 12h, 42h, 06h
+data ends
+
+code segment
+start:
+	mov ax, data
+	mov ds, ax
+
+	mov si, offset arr
+	mov dx, count
+
+each: 
+	mov al, [si]
+	and al, 0fh
+	mov cl, 04h
+	shl al, cl
+
+	mov bl, [si]
+	shr bl, cl
+
+	add al, bl
+	mov [si], al
+
+	inc si
+	dec dx
+	jnz each
+
+	
+	mov ah, 4ch
+	int 21h
+code ends
+end start

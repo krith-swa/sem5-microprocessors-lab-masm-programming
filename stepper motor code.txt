@@ -1,0 +1,23 @@
+count equ 1010h
+
+start: 
+	mov di, loc
+	mov cx, 04h
+
+rotate: 
+	mov al, [di]
+	out c0, al
+	
+	mov dx, count
+delay: 
+	dec dx
+	jnz delay
+
+	inc di
+	loop rotate
+
+	jmp start
+
+loc:
+	8 1 4 2 (for clockwise)
+	8 2 4 1 (for anti-clockwise)

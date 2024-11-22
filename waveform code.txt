@@ -1,0 +1,98 @@
+Square wave:
+
+start:
+	mov al, 00h
+	out c8, al
+	call delay
+
+	mov al, 0FFh
+	out c8, al
+	call delay
+
+	jmp start
+
+delay:
+	mov cx, 05FFh
+repeat: loop repeat
+	ret
+
+
+
+Sawtooth wave:
+
+start:
+	mov al, 00h
+
+rise:
+	out c8, al
+	inc al
+	jnz rise
+
+	jmp start
+
+
+
+Triangular wave:
+
+start: 
+	
+	mov bl, 00h
+rise: 
+	mov al, bl
+	out c8, al
+	inc bl
+	jnz rise
+
+	mov bl, 0FFh
+fall: 
+	mov al, bl
+	out c8, al
+	dec bl
+	jnz fall
+
+	jmp start
+
+
+
+Sine wave:
+
+start:
+	mov cx, 42h
+	mov si, lookup
+plot:
+	mov al, [si]
+	out c8, al
+	inc si
+	loop plot
+
+	jmp start
+
+lookup: (db) ...
+
+
+
+Step wave:
+
+start:
+	mov al, 00h
+	out c8, al
+	call delay
+
+	mov al, 3Fh
+	out c8, al
+	call delay
+
+	mov al, 0BFh
+	out c8, al
+	call delay
+
+	mov al, 0FFh
+	out c8, al
+	call delay
+
+	jmp start
+
+delay:
+	mov cx, 05FFh
+repeat: loop repeat
+	ret

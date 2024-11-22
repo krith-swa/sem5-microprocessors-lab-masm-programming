@@ -1,0 +1,36 @@
+assume cs:code, ds:data
+	
+data segment
+	len equ 04h
+	org 0000h
+	arr db 6ah, 6bh, 0aah, 23h
+	org 0010h
+	count db 00h
+data ends
+
+code segment
+start:
+	mov ax, data
+	mov ds, ax
+
+	mov si, offset arr
+	mov cl, len
+	mov dl, count
+
+match:
+	mov al, [si]
+	and al, 3ch
+	cmp al, 28h
+	jnz next
+	inc dl
+next:
+	inc si
+	loop match
+
+	mov count, dl
+
+
+	mov ah, 4ch
+	int 21h
+code ends
+end start

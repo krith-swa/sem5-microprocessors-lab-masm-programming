@@ -1,0 +1,97 @@
+org 1000h
+
+cntrl equ 26h
+porta equ 20h
+portb equ 22h
+portc equ 24h
+
+start:
+
+mov al, 80h
+out cntrl, al
+
+repeat:
+
+mov bx, lookup
+mov si, label
+
+call out
+mov al, [si]
+out porta, al
+call delay1
+inc si
+inc bx
+
+call out
+mov al, [si]
+out portb, al
+call delay1
+inc si
+inc bx
+
+call out
+mov al, [si]
+out portc, al
+call delay1
+inc si
+inc bx
+
+call out
+mov al, [si]
+out portc, al
+inc si
+mov al, [si]
+out porta, al
+call delay1
+
+jmp repeat
+
+out:
+
+mov al, [bx]
+out portc, al
+inc bx
+
+mov al, [bx]
+out portb, al
+inc bx
+
+mov al, [bx]
+out porta, al
+
+call delay
+ret
+
+delay:
+
+	mov di, 00040h
+A:	mov dx, 0ffffh
+A1:	dec dx
+	jnz A1
+	dec di
+	jnz A
+	
+	ret
+
+delay1:
+
+	mov di, 00015h
+B:	mov dx, 0ffffh
+B1:	dec dx
+	jnz A1
+	dec di
+	jnz A
+	
+	ret
+
+lookup:
+
+(db)	12 27 44
+	10 2B 92
+	10 9D 84
+	48 2E 84
+
+label:
+
+(db)	48 4B 20 49 04
+	

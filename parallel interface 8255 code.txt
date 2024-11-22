@@ -1,0 +1,74 @@
+EXPT 1:
+
+mov al, 90h
+out c6, al
+
+mov si, 1500
+in al, c0
+mov [si], al
+
+hlt
+
+
+EXPT 2:
+
+mov al, 90h
+out c6, al
+
+in al, c0
+out c2, al
+
+hlt
+
+
+EXPT 3:
+
+mov al, 90h
+out c6, al
+
+mov al, 80h
+out c4, al
+
+hlt
+
+
+EXPT 4:
+
+mov al, 80h
+out c6, al
+
+mov al, 01h
+out c4, al
+
+mov al, 07h
+out c6, al
+
+hlt
+
+
+EXPT 5:
+
+mov al, 99h
+out c6, al
+
+mov si, 1500
+in al, c4
+mov [si], al
+
+hlt
+
+
+EXPT 6:
+
+mov al, b4h
+out c6, al
+
+read:
+	in al, c4
+	and al, 20h
+	jz read
+
+in al, c0
+out c2, al
+
+hlt

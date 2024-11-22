@@ -1,0 +1,54 @@
+Keyboard - Read and Store:
+
+
+mov bx, 1100
+
+readstatus:
+	in al, c2
+	test al, 07h
+	jz readstatus
+
+mov al, 40h
+out c2, al
+in al, c0
+mov [bx], al
+
+hlt
+
+
+
+
+Rolling Display:
+
+
+start: 
+	mov al, 10h
+	out c2, al
+	
+	mov al, 0cch
+	out c2, al
+
+	mov al, 90h
+	out c2, al
+
+	mov si, msg
+	mov cx, 0fh
+
+display:
+	mov al, [si]
+	out c0, al
+	call delay
+	inc si
+	loop display
+
+	jmp start
+
+delay:
+	mov di, 03h
+B:	mov dx, 0ffffh
+B1:	dec dx
+	jnz B1
+	dec di
+	jnz B
+
+	hlt
